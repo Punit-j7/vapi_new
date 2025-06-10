@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Talk to Agent</title>
+</head>
+<body>
+  <h1>TALK TO AGENT</h1>
+
+  <script>
+    var vapiInstance = null;
+    const buttonConfig = {}; // optional customization
+
+    fetch('/api/vapi-config')
+      .then(res => res.json())
+      .then(({ apiKey, assistant }) => {
+        const g = document.createElement("script");
+        g.src = "https://cdn.jsdelivr.net/gh/VapiAI/html-script-tag@latest/dist/assets/index.js";
+        g.defer = true;
+        g.async = true;
+
+        g.onload = function () {
+          vapiInstance = window.vapiSDK.run({
+            apiKey: apiKey,
+            assistant: assistant,
+            config: buttonConfig,
+          });
+        };
+
+        document.head.appendChild(g);
+      })
+      .catch(err => {
+        console.error("Failed to load Vapi config:", err);
+      });
+  </script>
+</body>
+</html>
